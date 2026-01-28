@@ -7,7 +7,7 @@ using Azure.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (!builder.Environment.IsDevelopment())
+/*if (!builder.Environment.IsDevelopment())
 {
     SecretClientOptions options = new SecretClientOptions()
     {
@@ -28,7 +28,7 @@ if (!builder.Environment.IsDevelopment())
     KeyVaultSecret secret = await client.GetSecretAsync("dbSecret");
     
     builder.Configuration["ConnectionStrings:Demo_appContext"] = secret.Value;
-}
+}*/
 
 builder.Services.AddDbContextFactory<Demo_appContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Demo_appContext") 
