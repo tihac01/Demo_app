@@ -7,7 +7,7 @@ using Azure.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*if (!builder.Environment.IsDevelopment())
+if (!builder.Environment.IsDevelopment())
 {
     SecretClientOptions options = new SecretClientOptions()
     {
@@ -21,14 +21,14 @@ var builder = WebApplication.CreateBuilder(args);
     };
 
     var client = new SecretClient(
-        new Uri("https://demokeyvaultneki.vault.azure.net/"),
+        new Uri("https://novaapp-keyvault.vault.azure.net/"),
         new DefaultAzureCredential(), 
         options);
 
     KeyVaultSecret secret = await client.GetSecretAsync("dbSecret");
     
     builder.Configuration["ConnectionStrings:Demo_appContext"] = secret.Value;
-}*/
+}
 
 builder.Services.AddDbContextFactory<Demo_appContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Demo_appContext") 
