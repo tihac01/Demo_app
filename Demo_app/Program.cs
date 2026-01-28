@@ -25,7 +25,7 @@ if (!builder.Environment.IsDevelopment())
         new DefaultAzureCredential(), 
         options);
 
-    KeyVaultSecret secret = await client.GetSecretAsync("dbSecrit");
+    KeyVaultSecret secret = await client.GetSecretAsync("dbSecret");
     
     builder.Configuration["ConnectionStrings:Demo_appContext"] = secret.Value;
 }
