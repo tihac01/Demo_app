@@ -1,12 +1,38 @@
 ﻿using Demo_app.Components;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Demo_app.Data;
-using Microsoft.AspNetCore.Identity;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (!builder.Environment.IsDevelopment())
+{
+    SecretClientOptions options = new SecretClientOptions()
+    {
+        Retry =
+        {
+            Delay= TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+         }
+    };
+
+    var client = new SecretClient(
+        new Uri("https://demokeyvaultneki.vault.azure.net/"),
+        new DefaultAzureCredential(), 
+        options);
+
+    KeyVaultSecret secret = await client.GetSecretAsync("dbSecrit");
+    
+    builder.Configuration["ConnectionStrings:Demo_appContext"] = secret.Value;
+}
+
 builder.Services.AddDbContextFactory<Demo_appContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Demo_appContext") ?? throw new InvalidOperationException("Connection string 'Demo_appContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Demo_appContext") 
+    ?? throw new InvalidOperationException("Connection string 'Demo_appContext' not found.")));
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
