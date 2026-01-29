@@ -21,7 +21,7 @@ if (!builder.Environment.IsDevelopment())
     };
 
     var client = new SecretClient(
-        new Uri("https://novaapp-keyvault.vault.azure.net/"),
+        new Uri("https://demo-keyvoult.vault.azure.net/"),
         new DefaultAzureCredential(), 
         options);
 
