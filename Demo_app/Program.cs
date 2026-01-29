@@ -7,28 +7,28 @@ using Azure.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (!builder.Environment.IsDevelopment())
-{
-    SecretClientOptions options = new SecretClientOptions()
-    {
-        Retry =
-        {
-            Delay= TimeSpan.FromSeconds(2),
-            MaxDelay = TimeSpan.FromSeconds(16),
-            MaxRetries = 5,
-            Mode = RetryMode.Exponential
-         }
-    };
+//if (!builder.environment.isdevelopment())
+//{
+//    secretclientoptions options = new secretclientoptions()
+//    {
+//        retry =
+//        {
+//            delay= timespan.fromseconds(2),
+//            maxdelay = timespan.fromseconds(16),
+//            maxretries = 5,
+//            mode = retrymode.exponential
+//         }
+//    };
 
-    var client = new SecretClient(
-        new Uri("https://demo-keyvoult.vault.azure.net/"),
-        new DefaultAzureCredential(), 
-        options);
+//    var client = new secretclient(
+//        new uri("https://demo-keyvoult.vault.azure.net/"),
+//        new defaultazurecredential(),
+//        options);
 
-    KeyVaultSecret secret = await client.GetSecretAsync("dbSecret");
-    
-    builder.Configuration["ConnectionStrings:Demo_appContext"] = secret.Value;
-}
+//    keyvaultsecret secret = await client.getsecretasync("dbsecret");
+
+//    builder.configuration["connectionstrings:demo_appcontext"] = secret.value;
+//}
 
 builder.Services.AddDbContextFactory<Demo_appContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Demo_appContext") 
