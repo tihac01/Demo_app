@@ -19,7 +19,7 @@ if (!builder.Environment.IsDevelopment())
             Mode = RetryMode.Exponential
          }
     };
-
+    
     var client = new SecretClient(
         new Uri("https://mojnovikeyvault.vault.azure.net/"),
         new DefaultAzureCredential(), 
